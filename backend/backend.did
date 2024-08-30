@@ -5,9 +5,7 @@ type Result =
  };
 service : {
   calculate_cycles: (float64, bool) -> (Result) query;
-  get_average_usage: () -> (float64) query;
   get_icp_price: () -> (float64) query;
   purchase_cycles: (float64, bool) -> (Result);
-  record_usage: (nat) -> ();
   update_icp_price: (float64) -> ();
 }

@@ -68,10 +68,12 @@ const abbreviateNumber = (num: number): string => {
   return scaled.toFixed(2) + suffix;
 };
 
+const AVERAGE_USAGE_CYCLES = 100_000_000_000; // 100 billion cycles per month
+
 const cyclesInfoText = [
   { icon: <SpeedIcon fontSize="large" />, title: 'Performance', content: 'Powers IC Computation' },
   { icon: <AccountBalanceWalletIcon fontSize="large" />, title: 'Economy', content: '1 ICP = 10T Cycles' },
-  { icon: <BarChartIcon fontSize="large" />, title: 'Usage', content: 'Avg: {avgUsage} Cycles/Month' },
+  { icon: <BarChartIcon fontSize="large" />, title: 'Usage', content: `Avg: ${abbreviateNumber(AVERAGE_USAGE_CYCLES)} Cycles/Month` },
   { icon: <EvStationIcon fontSize="large" />, title: 'Refill', content: 'Top up your cycles here' },
 ];
 
@@ -83,15 +85,12 @@ const App: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [icpPrice, setIcpPrice] = useState(7.5);
   const [error, setError] = useState<string | null>(null);
-  const [averageUsage, setAverageUsage] = useState<number>(0);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const price = await backend.get_icp_price();
         setIcpPrice(Number(price));
-        const avgUsage = await backend.get_average_usage();
-        setAverageUsage(Number(avgUsage));
       } catch (error) {
         console.error('Error fetching data:', error);
         setError('Failed to fetch data. Please try again later.');
@@ -168,7 +167,7 @@ const App: React.FC = () => {
                       {info.title}
                     </Typography>
                     <Typography variant="body2">
-                      {info.title === 'Usage' ? info.content.replace('{avgUsage}', abbreviateNumber(averageUsage)) : info.content}
+                      {info.content}
                     </Typography>
                   </InfoBox>
                 </Grid>
