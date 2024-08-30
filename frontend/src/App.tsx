@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { backend } from 'declarations/backend';
-import { Card, CardContent, Typography, Slider, Switch, TextField, Button, CircularProgress, Snackbar, IconButton } from '@mui/material';
+import { Card, CardContent, Typography, Slider, Switch, TextField, Button, CircularProgress, Snackbar, IconButton, Tooltip } from '@mui/material';
 import { styled, ThemeProvider } from '@mui/material/styles';
 import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
+import InfoIcon from '@mui/icons-material/Info';
 import { lightTheme, darkTheme } from './main';
 
 const StyledCard = styled(Card)(({ theme }) => ({
@@ -21,6 +22,8 @@ const abbreviateNumber = (num: number): string => {
   const suffix = suffixes[Math.min(magnitude, suffixes.length - 1)];
   return scaled.toFixed(2) + suffix;
 };
+
+const cyclesInfoText = `Cycles are the fuel that powers computation on the Internet Computer. They're used to pay for resources like CPU, memory, and network bandwidth. At the current ICP price of $7.50, 1 ICP buys you 10 trillion cycles. On average, a simple dapp might use about 100 billion cycles per month, which is equivalent to $0.075 worth of ICP.`;
 
 const App: React.FC = () => {
   const [darkMode, setDarkMode] = useState(false);
@@ -122,6 +125,11 @@ const App: React.FC = () => {
             {cycles !== null && (
               <Typography variant="body1" className="mt-2" color="textSecondary">
                 {`${abbreviateNumber(Number(cycles))} cycles`}
+                <Tooltip title={cyclesInfoText} arrow>
+                  <IconButton size="small" style={{ marginLeft: '8px', padding: '0' }}>
+                    <InfoIcon fontSize="small" />
+                  </IconButton>
+                </Tooltip>
               </Typography>
             )}
             <TextField
