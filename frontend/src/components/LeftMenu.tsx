@@ -1,25 +1,43 @@
 import React from 'react';
-import { Drawer, List, ListItem, ListItemIcon, ListItemText, IconButton } from '@mui/material';
+import { List, ListItem, ListItemIcon, ListItemText } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import HomeIcon from '@mui/icons-material/Home';
 import EvStationIcon from '@mui/icons-material/EvStation';
 import DiamondIcon from '@mui/icons-material/Diamond';
 import CodeIcon from '@mui/icons-material/Code';
-import CloseIcon from '@mui/icons-material/Close';
 
-const StyledDrawer = styled(Drawer)(({ theme }) => ({
-  '& .MuiDrawer-paper': {
-    width: 240,
-    backgroundColor: theme.palette.background.default,
+const StyledMenu = styled('div')(({ theme }) => ({
+  width: 240,
+  height: '100vh',
+  position: 'fixed',
+  left: 0,
+  top: 0,
+  backgroundColor: theme.palette.background.paper,
+  borderRight: `1px solid ${theme.palette.divider}`,
+  transition: 'all 0.3s ease',
+  [theme.breakpoints.down('md')]: {
+    width: 60,
   },
 }));
 
-interface LeftMenuProps {
-  open: boolean;
-  onClose: () => void;
-}
+const StyledListItem = styled(ListItem)(({ theme }) => ({
+  borderLeft: '3px solid transparent',
+  '&:hover, &.active': {
+    backgroundColor: theme.palette.action.hover,
+    borderLeftColor: theme.palette.primary.main,
+    '& .MuiListItemIcon-root, & .MuiListItemText-primary': {
+      color: theme.palette.primary.main,
+    },
+  },
+}));
 
-const LeftMenu: React.FC<LeftMenuProps> = ({ open, onClose }) => {
+const StyledListItemText = styled(ListItemText)(({ theme }) => ({
+  [theme.breakpoints.down('md')]: {
+    display: 'none',
+  },
+}));
+
+const LeftMenu: React.FC = () => {
   const menuItems = [
     { text: 'Home', icon: <HomeIcon />, link: '/' },
     { text: 'Refill Cycles', icon: <EvStationIcon />, link: '/refill' },
@@ -28,21 +46,22 @@ const LeftMenu: React.FC<LeftMenuProps> = ({ open, onClose }) => {
   ];
 
   return (
-    <StyledDrawer anchor="left" open={open} onClose={onClose}>
-      <div style={{ display: 'flex', justifyContent: 'flex-end', padding: '8px' }}>
-        <IconButton onClick={onClose}>
-          <CloseIcon />
-        </IconButton>
-      </div>
+    <StyledMenu>
       <List>
         {menuItems.map((item, index) => (
-          <ListItem button key={index} component="a" href={item.link} target={item.link.startsWith('http') ? '_blank' : '_self'}>
+          <StyledListItem
+            button
+            key={index}
+            component="a"
+            href={item.link}
+            target={item.link.startsWith('http') ? '_blank' : '_self'}
+          >
             <ListItemIcon>{item.icon}</ListItemIcon>
-            <ListItemText primary={item.text} />
-          </ListItem>
+            <StyledListItemText primary={item.text} />
+          </StyledListItem>
         ))}
       </List>
-    </StyledDrawer>
+    </StyledMenu>
   );
 };
 
