@@ -1,0 +1,11 @@
+type Result = 
+ variant {
+   err: text;
+   ok: nat;
+ };
+service : {
+  calculate_cycles: (float64, bool) -> (Result) query;
+  get_icp_price: () -> (float64) query;
+  purchase_cycles: (float64, bool) -> (Result);
+  update_icp_price: (float64) -> ();
+}
