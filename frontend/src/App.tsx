@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { backend } from 'declarations/backend';
-import { Card, CardContent, Typography, Slider, Switch, TextField, Button, CircularProgress } from '@mui/material';
+import { Card, CardContent, Typography, Slider, Switch, TextField, Button, CircularProgress, Snackbar } from '@mui/material';
 import { styled } from '@mui/material/styles';
 
 const StyledCard = styled(Card)(({ theme }) => ({
@@ -16,11 +16,17 @@ const App: React.FC = () => {
   const [cycles, setCycles] = useState<bigint | null>(null);
   const [loading, setLoading] = useState(false);
   const [icpPrice, setIcpPrice] = useState(7.5);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchIcpPrice = async () => {
-      const price = await backend.get_icp_price();
-      setIcpPrice(Number(price));
+      try {
+        const price = await backend.get_icp_price();
+        setIcpPrice(Number(price));
+      } catch (error) {
+        console.error('Error fetching ICP price:', error);
+        setError('Failed to fetch ICP price. Please try again later.');
+      }
     };
     fetchIcpPrice();
   }, []);
@@ -35,10 +41,12 @@ const App: React.FC = () => {
         } else {
           console.error(result.err);
           setCycles(null);
+          setError(result.err);
         }
       } catch (error) {
         console.error('Error calculating cycles:', error);
         setCycles(null);
+        setError('An error occurred while calculating cycles. Please try again.');
       }
       setLoading(false);
     };
@@ -52,13 +60,17 @@ const App: React.FC = () => {
       if ('ok' in result) {
         alert(`Successfully purchased ${result.ok} cycles!`);
       } else {
-        alert(`Error: ${result.err}`);
+        setError(`Error: ${result.err}`);
       }
     } catch (error) {
       console.error('Error purchasing cycles:', error);
-      alert('An error occurred while purchasing cycles.');
+      setError('An error occurred while purchasing cycles. Please try again.');
     }
     setLoading(false);
+  };
+
+  const handleCloseError = () => {
+    setError(null);
   };
 
   return (
@@ -127,6 +139,12 @@ const App: React.FC = () => {
           {loading ? <CircularProgress size={24} /> : 'Purchase Cycles'}
         </Button>
       </CardContent>
+      <Snackbar
+        open={error !== null}
+        autoHideDuration={6000}
+        onClose={handleCloseError}
+        message={error}
+      />
     </StyledCard>
   );
 };
