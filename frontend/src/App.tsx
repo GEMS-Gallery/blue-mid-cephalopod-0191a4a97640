@@ -8,15 +8,22 @@ import EvStationIcon from '@mui/icons-material/EvStation';
 import SpeedIcon from '@mui/icons-material/Speed';
 import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
 import BarChartIcon from '@mui/icons-material/BarChart';
+import MenuIcon from '@mui/icons-material/Menu';
 import { lightTheme, darkTheme } from './theme';
+import LeftMenu from './components/LeftMenu';
 
 const StyledCard = styled(Card)(({ theme }) => ({
   maxWidth: 800,
   margin: '2rem auto',
+  marginLeft: '280px',
   padding: theme.spacing(3),
   backgroundColor: theme.palette.background.paper,
   boxShadow: '0 8px 32px rgba(0, 0, 0, 0.1)',
   borderRadius: '16px',
+  [theme.breakpoints.down('md')]: {
+    marginLeft: 'auto',
+    marginRight: 'auto',
+  },
 }));
 
 const InfoBox = styled(Box)(({ theme }) => ({
@@ -85,6 +92,7 @@ const App: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [icpPrice, setIcpPrice] = useState(7.5);
   const [error, setError] = useState<string | null>(null);
+  const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -145,9 +153,20 @@ const App: React.FC = () => {
     setDarkMode(!darkMode);
   };
 
+  const toggleMenu = () => {
+    setMenuOpen(!menuOpen);
+  };
+
   return (
     <ThemeProvider theme={darkMode ? darkTheme : lightTheme}>
       <div style={{ minHeight: '100vh', backgroundColor: darkMode ? '#121212' : '#f5f5f5', transition: 'background-color 0.3s' }}>
+        <LeftMenu open={menuOpen} onClose={toggleMenu} />
+        <IconButton
+          onClick={toggleMenu}
+          style={{ position: 'fixed', top: '10px', left: '10px', zIndex: 1100 }}
+        >
+          <MenuIcon />
+        </IconButton>
         <StyledCard>
           <CardContent>
             <Box display="flex" alignItems="center" mb={4}>
