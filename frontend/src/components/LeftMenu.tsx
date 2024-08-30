@@ -3,7 +3,6 @@ import { List, ListItem, ListItemIcon, ListItemText } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import HomeIcon from '@mui/icons-material/Home';
 import EvStationIcon from '@mui/icons-material/EvStation';
-import DiamondIcon from '@mui/icons-material/Diamond';
 import CodeIcon from '@mui/icons-material/Code';
 
 const StyledMenu = styled('div')(({ theme }) => ({
@@ -41,8 +40,7 @@ const LeftMenu: React.FC = () => {
   const menuItems = [
     { text: 'Home', icon: <HomeIcon />, link: '/' },
     { text: 'Refill Cycles', icon: <EvStationIcon />, link: '/refill' },
-    { text: 'GEMS', icon: <DiamondIcon />, link: 'https://beta.gems.fr1-dmz1.dfinity.network/' },
-    { text: 'Start Building', icon: <CodeIcon />, link: '/start-building' },
+    { text: 'Start Building', icon: <CodeIcon />, link: 'https://beta.gems.fr1-dmz1.dfinity.network/' },
   ];
 
   return (

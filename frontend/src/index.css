@@ -157,3 +157,26 @@ body {
     margin-right: 0;
   }
 }
+
+.header {
+  background-color: #ffffff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 16px 0;
+  position: fixed;
+  top: 0;
+  left: 240px;
+  right: 0;
+  z-index: 1000;
+  transition: all 0.3s;
+}
+
+.dark .header {
+  background-color: #1e1e1e;
+  box-shadow: 0 2px 4px rgba(255, 255, 255, 0.1);
+}
+
+@media (max-width: 768px) {
+  .header {
+    left: 60px;
+  }
+}

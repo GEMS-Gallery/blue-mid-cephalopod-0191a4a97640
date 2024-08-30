@@ -10,11 +10,13 @@ import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
 import BarChartIcon from '@mui/icons-material/BarChart';
 import { lightTheme, darkTheme } from './theme';
 import LeftMenu from './components/LeftMenu';
+import Header from './components/Header';
 
 const StyledCard = styled(Card)(({ theme }) => ({
   maxWidth: 800,
   margin: '2rem auto',
   marginLeft: '280px',
+  marginTop: '80px',
   padding: theme.spacing(3),
   backgroundColor: theme.palette.background.paper,
   boxShadow: '0 8px 32px rgba(0, 0, 0, 0.1)',
@@ -155,6 +157,7 @@ const App: React.FC = () => {
     <ThemeProvider theme={darkMode ? darkTheme : lightTheme}>
       <div style={{ minHeight: '100vh', backgroundColor: darkMode ? '#121212' : '#f5f5f5', transition: 'background-color 0.3s' }}>
         <LeftMenu />
+        <Header darkMode={darkMode} toggleDarkMode={toggleDarkMode} />
         <StyledCard>
           <CardContent>
             <Box display="flex" alignItems="center" mb={4}>
@@ -248,11 +251,6 @@ const App: React.FC = () => {
             </Button>
           </CardContent>
         </StyledCard>
-        <div className="dark-mode-toggle">
-          <IconButton onClick={toggleDarkMode} color="inherit">
-            {darkMode ? <Brightness7Icon /> : <Brightness4Icon />}
-          </IconButton>
-        </div>
         <Snackbar
           open={error !== null}
           autoHideDuration={6000}
