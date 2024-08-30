@@ -5,8 +5,9 @@ import './index.css';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 
-const theme = createTheme({
+const lightTheme = createTheme({
   palette: {
+    mode: 'light',
     primary: {
       main: '#000000',
     },
@@ -27,12 +28,34 @@ const theme = createTheme({
   },
 });
 
+const darkTheme = createTheme({
+  palette: {
+    mode: 'dark',
+    primary: {
+      main: '#ffffff',
+    },
+    secondary: {
+      main: '#000000',
+    },
+    background: {
+      default: '#121212',
+      paper: '#1e1e1e',
+    },
+    text: {
+      primary: '#ffffff',
+      secondary: '#b3b3b3',
+    },
+  },
+  typography: {
+    fontFamily: 'Roboto, Arial, sans-serif',
+  },
+});
+
 ReactDOM.render(
   <React.StrictMode>
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
-      <App />
-    </ThemeProvider>
+    <App />
   </React.StrictMode>,
   document.getElementById('root')
 );
+
+export { lightTheme, darkTheme };

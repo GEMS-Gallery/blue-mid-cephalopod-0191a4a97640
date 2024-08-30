@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { backend } from 'declarations/backend';
-import { Card, CardContent, Typography, Slider, Switch, TextField, Button, CircularProgress, Snackbar } from '@mui/material';
-import { styled } from '@mui/material/styles';
+import { Card, CardContent, Typography, Slider, Switch, TextField, Button, CircularProgress, Snackbar, IconButton } from '@mui/material';
+import { styled, ThemeProvider } from '@mui/material/styles';
+import Brightness4Icon from '@mui/icons-material/Brightness4';
+import Brightness7Icon from '@mui/icons-material/Brightness7';
+import { lightTheme, darkTheme } from './main';
 
 const StyledCard = styled(Card)(({ theme }) => ({
   maxWidth: 600,
@@ -83,92 +86,97 @@ const App: React.FC = () => {
     setError(null);
   };
 
+  const toggleDarkMode = () => {
+    setDarkMode(!darkMode);
+  };
+
   return (
-    <StyledCard>
-      <CardContent>
-        <Typography variant="h4" gutterBottom color="textPrimary">
-          Purchase IC Cycles
-        </Typography>
-        <div className="flex justify-between items-center mb-4">
-          <Typography color="textSecondary">Dark Mode</Typography>
-          <Switch
-            checked={darkMode}
-            onChange={(e) => setDarkMode(e.target.checked)}
-            color="primary"
-          />
+    <ThemeProvider theme={darkMode ? darkTheme : lightTheme}>
+      <div style={{ minHeight: '100vh', backgroundColor: darkMode ? '#121212' : '#f5f5f5', transition: 'background-color 0.3s' }}>
+        <StyledCard>
+          <CardContent>
+            <Typography variant="h4" gutterBottom color="textPrimary">
+              Purchase IC Cycles
+            </Typography>
+            <div className="flex justify-between items-center mb-4">
+              <Typography color="textSecondary">{isICP ? 'ICP' : 'USD'}</Typography>
+              <Switch
+                checked={isICP}
+                onChange={(e) => setIsICP(e.target.checked)}
+                color="primary"
+              />
+            </div>
+            <Slider
+              value={amount}
+              onChange={(_, newValue) => setAmount(newValue as number)}
+              min={1}
+              max={isICP ? 20 : 100}
+              step={isICP ? 0.1 : 1}
+              marks
+              valueLabelDisplay="auto"
+              color="primary"
+            />
+            <Typography variant="h6" className="mt-4" color="textPrimary">
+              {isICP ? `${amount} ICP` : `$${amount}`}
+            </Typography>
+            {cycles !== null && (
+              <Typography variant="body1" className="mt-2" color="textSecondary">
+                {`${abbreviateNumber(Number(cycles))} cycles`}
+              </Typography>
+            )}
+            <TextField
+              label="Card Number"
+              variant="outlined"
+              fullWidth
+              className="mt-4"
+              InputLabelProps={{
+                style: { color: darkMode ? '#b3b3b3' : '#666666' },
+              }}
+            />
+            <TextField
+              label="Expiration Date"
+              variant="outlined"
+              fullWidth
+              className="mt-4"
+              InputLabelProps={{
+                style: { color: darkMode ? '#b3b3b3' : '#666666' },
+              }}
+            />
+            <TextField
+              label="CVV"
+              variant="outlined"
+              fullWidth
+              className="mt-4"
+              InputLabelProps={{
+                style: { color: darkMode ? '#b3b3b3' : '#666666' },
+              }}
+            />
+            <Button
+              variant="contained"
+              color="primary"
+              fullWidth
+              className="mt-4"
+              onClick={handlePurchase}
+              disabled={loading}
+              style={{ marginTop: '1rem' }}
+            >
+              {loading ? <CircularProgress size={24} /> : 'Purchase Cycles'}
+            </Button>
+          </CardContent>
+        </StyledCard>
+        <div className="dark-mode-toggle">
+          <IconButton onClick={toggleDarkMode} color="inherit">
+            {darkMode ? <Brightness7Icon /> : <Brightness4Icon />}
+          </IconButton>
         </div>
-        <div className="flex justify-between items-center mb-4">
-          <Typography color="textSecondary">{isICP ? 'ICP' : 'USD'}</Typography>
-          <Switch
-            checked={isICP}
-            onChange={(e) => setIsICP(e.target.checked)}
-            color="primary"
-          />
-        </div>
-        <Slider
-          value={amount}
-          onChange={(_, newValue) => setAmount(newValue as number)}
-          min={1}
-          max={isICP ? 20 : 100}
-          step={isICP ? 0.1 : 1}
-          marks
-          valueLabelDisplay="auto"
-          color="primary"
+        <Snackbar
+          open={error !== null}
+          autoHideDuration={6000}
+          onClose={handleCloseError}
+          message={error}
         />
-        <Typography variant="h6" className="mt-4" color="textPrimary">
-          {isICP ? `${amount} ICP` : `$${amount}`}
-        </Typography>
-        {cycles !== null && (
-          <Typography variant="body1" className="mt-2" color="textSecondary">
-            {`${abbreviateNumber(Number(cycles))} cycles`}
-          </Typography>
-        )}
-        <TextField
-          label="Card Number"
-          variant="outlined"
-          fullWidth
-          className="mt-4"
-          InputLabelProps={{
-            style: { color: '#666666' },
-          }}
-        />
-        <TextField
-          label="Expiration Date"
-          variant="outlined"
-          fullWidth
-          className="mt-4"
-          InputLabelProps={{
-            style: { color: '#666666' },
-          }}
-        />
-        <TextField
-          label="CVV"
-          variant="outlined"
-          fullWidth
-          className="mt-4"
-          InputLabelProps={{
-            style: { color: '#666666' },
-          }}
-        />
-        <Button
-          variant="contained"
-          color="primary"
-          fullWidth
-          className="mt-4"
-          onClick={handlePurchase}
-          disabled={loading}
-          style={{ marginTop: '1rem' }}
-        >
-          {loading ? <CircularProgress size={24} /> : 'Purchase Cycles'}
-        </Button>
-      </CardContent>
-      <Snackbar
-        open={error !== null}
-        autoHideDuration={6000}
-        onClose={handleCloseError}
-        message={error}
-      />
-    </StyledCard>
+      </div>
+    </ThemeProvider>
   );
 };
 
