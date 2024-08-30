@@ -34,6 +34,29 @@ const InfoBox = styled(Box)(({ theme }) => ({
   },
 }));
 
+const StyledTextField = styled(TextField)(({ theme }) => ({
+  '& .MuiOutlinedInput-root': {
+    '& fieldset': {
+      borderColor: 'transparent',
+    },
+    '&:hover fieldset': {
+      borderColor: 'transparent',
+    },
+    '&.Mui-focused fieldset': {
+      borderColor: 'transparent',
+    },
+  },
+  '& .MuiOutlinedInput-input': {
+    padding: '10px 15px',
+    backgroundColor: theme.palette.mode === 'light' ? '#f0f0f0' : '#333',
+    borderRadius: '4px',
+    transition: 'background-color 0.3s',
+    '&:focus': {
+      backgroundColor: theme.palette.mode === 'light' ? '#e0e0e0' : '#444',
+    },
+  },
+}));
+
 const abbreviateNumber = (num: number): string => {
   const suffixes = ['', 'K', 'M', 'B', 'T'];
   const magnitude = Math.floor(Math.log10(Math.abs(num)) / 3);
@@ -46,7 +69,7 @@ const cyclesInfoText = [
   { icon: <MemoryIcon fontSize="large" />, title: 'Computation', content: 'Powers IC' },
   { icon: <StorageIcon fontSize="large" />, title: 'Resources', content: 'CPU, Memory, Network' },
   { icon: <MonetizationOnIcon fontSize="large" />, title: 'Conversion', content: '1 ICP = 10T Cycles' },
-  { icon: <NetworkCheckIcon fontSize="large" />, title: 'Usage', content: '100B Cycles/Month' },
+  { icon: <NetworkCheckIcon fontSize="large" />, title: 'Usage', content: 'Avg: {avgUsage} Cycles/Month' },
 ];
 
 const App: React.FC = () => {
@@ -57,18 +80,21 @@ const App: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [icpPrice, setIcpPrice] = useState(7.5);
   const [error, setError] = useState<string | null>(null);
+  const [averageUsage, setAverageUsage] = useState<number>(0);
 
   useEffect(() => {
-    const fetchIcpPrice = async () => {
+    const fetchData = async () => {
       try {
         const price = await backend.get_icp_price();
         setIcpPrice(Number(price));
+        const avgUsage = await backend.get_average_usage();
+        setAverageUsage(Number(avgUsage));
       } catch (error) {
-        console.error('Error fetching ICP price:', error);
-        setError('Failed to fetch ICP price. Please try again later.');
+        console.error('Error fetching data:', error);
+        setError('Failed to fetch data. Please try again later.');
       }
     };
-    fetchIcpPrice();
+    fetchData();
   }, []);
 
   useEffect(() => {
@@ -122,10 +148,7 @@ const App: React.FC = () => {
       <div style={{ minHeight: '100vh', backgroundColor: darkMode ? '#121212' : '#f5f5f5', transition: 'background-color 0.3s' }}>
         <StyledCard>
           <CardContent>
-            <Typography variant="h4" gutterBottom color="textPrimary">
-              Purchase IC Cycles
-            </Typography>
-            <Typography variant="h6" gutterBottom color="textPrimary">
+            <Typography variant="h3" gutterBottom color="textPrimary" style={{ fontWeight: 'bold', marginBottom: '1.5rem' }}>
               What are Cycles?
             </Typography>
             <Grid container spacing={3} style={{ marginBottom: '24px' }}>
@@ -139,12 +162,15 @@ const App: React.FC = () => {
                       {info.title}
                     </Typography>
                     <Typography variant="body2">
-                      {info.content}
+                      {info.title === 'Usage' ? info.content.replace('{avgUsage}', abbreviateNumber(averageUsage)) : info.content}
                     </Typography>
                   </InfoBox>
                 </Grid>
               ))}
             </Grid>
+            <Typography variant="h4" gutterBottom color="textPrimary" style={{ marginTop: '2rem' }}>
+              Purchase IC Cycles
+            </Typography>
             <div className="flex justify-between items-center mb-4">
               <Typography color="textSecondary">{isICP ? 'ICP' : 'USD'}</Typography>
               <Switch
@@ -171,41 +197,40 @@ const App: React.FC = () => {
                 {`${abbreviateNumber(Number(cycles))} cycles`}
               </Typography>
             )}
-            <TextField
-              label="Card Number"
-              variant="outlined"
-              fullWidth
-              className="mt-4"
-              InputLabelProps={{
-                style: { color: darkMode ? '#b3b3b3' : '#666666' },
-              }}
-            />
-            <TextField
-              label="Expiration Date"
-              variant="outlined"
-              fullWidth
-              className="mt-4"
-              InputLabelProps={{
-                style: { color: darkMode ? '#b3b3b3' : '#666666' },
-              }}
-            />
-            <TextField
-              label="CVV"
-              variant="outlined"
-              fullWidth
-              className="mt-4"
-              InputLabelProps={{
-                style: { color: darkMode ? '#b3b3b3' : '#666666' },
-              }}
-            />
+            <Box sx={{ mt: 4 }}>
+              <StyledTextField
+                label="Card Number"
+                variant="outlined"
+                fullWidth
+                placeholder="1234 5678 9012 3456"
+                sx={{ mb: 2 }}
+              />
+              <Grid container spacing={2}>
+                <Grid item xs={6}>
+                  <StyledTextField
+                    label="Expiration Date"
+                    variant="outlined"
+                    fullWidth
+                    placeholder="MM/YY"
+                  />
+                </Grid>
+                <Grid item xs={6}>
+                  <StyledTextField
+                    label="CVV"
+                    variant="outlined"
+                    fullWidth
+                    placeholder="123"
+                  />
+                </Grid>
+              </Grid>
+            </Box>
             <Button
               variant="contained"
               color="primary"
               fullWidth
-              className="mt-4"
               onClick={handlePurchase}
               disabled={loading}
-              style={{ marginTop: '1rem' }}
+              style={{ marginTop: '1.5rem', padding: '12px' }}
             >
               {loading ? <CircularProgress size={24} /> : 'Purchase Cycles'}
             </Button>

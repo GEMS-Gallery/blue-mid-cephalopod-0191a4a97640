@@ -62,3 +62,26 @@ body {
   height: 200px;
   margin-top: 24px;
 }
+
+.stripe-style-input {
+  border: none;
+  outline: none;
+  background-color: #f0f0f0;
+  padding: 10px 15px;
+  border-radius: 4px;
+  font-size: 16px;
+  transition: background-color 0.3s;
+}
+
+.stripe-style-input:focus {
+  background-color: #e0e0e0;
+}
+
+.dark .stripe-style-input {
+  background-color: #333;
+  color: #fff;
+}
+
+.dark .stripe-style-input:focus {
+  background-color: #444;
+}

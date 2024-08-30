@@ -6,8 +6,10 @@ export type Result = { 'ok' : bigint } |
   { 'err' : string };
 export interface _SERVICE {
   'calculate_cycles' : ActorMethod<[number, boolean], Result>,
+  'get_average_usage' : ActorMethod<[], number>,
   'get_icp_price' : ActorMethod<[], number>,
   'purchase_cycles' : ActorMethod<[number, boolean], Result>,
+  'record_usage' : ActorMethod<[bigint], undefined>,
   'update_icp_price' : ActorMethod<[number], undefined>,
 }
 export declare const idlFactory: IDL.InterfaceFactory;
