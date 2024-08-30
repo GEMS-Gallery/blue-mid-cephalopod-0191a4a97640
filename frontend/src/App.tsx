@@ -102,7 +102,21 @@ const App: React.FC = () => {
               Purchase IC Cycles
             </Typography>
             <div className="flex justify-between items-center mb-4">
-              <Typography color="textSecondary">{isICP ? 'ICP' : 'USD'}</Typography>
+              <div className="flex items-center">
+                <Typography color="textSecondary">{isICP ? 'ICP' : 'USD'}</Typography>
+                <Tooltip title={cyclesInfoText} arrow placement="right">
+                  <Button
+                    className="info-button"
+                    style={{ 
+                      backgroundColor: darkMode ? '#333' : '#e0e0e0',
+                      color: darkMode ? '#fff' : '#000'
+                    }}
+                  >
+                    <InfoIcon fontSize="small" />
+                    Info
+                  </Button>
+                </Tooltip>
+              </div>
               <Switch
                 checked={isICP}
                 onChange={(e) => setIsICP(e.target.checked)}
@@ -125,11 +139,6 @@ const App: React.FC = () => {
             {cycles !== null && (
               <Typography variant="body1" className="mt-2" color="textSecondary">
                 {`${abbreviateNumber(Number(cycles))} cycles`}
-                <Tooltip title={cyclesInfoText} arrow>
-                  <IconButton size="small" style={{ marginLeft: '8px', padding: '0' }}>
-                    <InfoIcon fontSize="small" />
-                  </IconButton>
-                </Tooltip>
               </Typography>
             )}
             <TextField

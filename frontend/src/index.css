@@ -16,3 +16,17 @@ body {
   right: 20px;
   z-index: 1000;
 }
+
+.info-button {
+  margin-left: 8px;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.info-button:hover {
+  background-color: rgba(0, 0, 0, 0.1);
+}
