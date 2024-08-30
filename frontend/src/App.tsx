@@ -1,17 +1,35 @@
 import React, { useState, useEffect } from 'react';
 import { backend } from 'declarations/backend';
-import { Card, CardContent, Typography, Slider, Switch, TextField, Button, CircularProgress, Snackbar, IconButton } from '@mui/material';
+import { Card, CardContent, Typography, Slider, Switch, TextField, Button, CircularProgress, Snackbar, IconButton, Grid, Paper } from '@mui/material';
 import { styled, ThemeProvider } from '@mui/material/styles';
 import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
-import { lightTheme, darkTheme } from './main';
+import MemoryIcon from '@mui/icons-material/Memory';
+import StorageIcon from '@mui/icons-material/Storage';
+import NetworkCheckIcon from '@mui/icons-material/NetworkCheck';
+import MonetizationOnIcon from '@mui/icons-material/MonetizationOn';
+import SpeedIcon from '@mui/icons-material/Speed';
+import { lightTheme, darkTheme } from './theme';
+import { Line } from 'react-chartjs-2';
+import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend } from 'chart.js';
+
+ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 
 const StyledCard = styled(Card)(({ theme }) => ({
-  maxWidth: 600,
+  maxWidth: 800,
   margin: '2rem auto',
   padding: theme.spacing(3),
   backgroundColor: theme.palette.background.paper,
   boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+}));
+
+const InfoCard = styled(Paper)(({ theme }) => ({
+  padding: theme.spacing(2),
+  height: '100%',
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
+  textAlign: 'center',
 }));
 
 const abbreviateNumber = (num: number): string => {
@@ -22,7 +40,12 @@ const abbreviateNumber = (num: number): string => {
   return scaled.toFixed(2) + suffix;
 };
 
-const cyclesInfoText = `Cycles are the fuel that powers computation on the Internet Computer. They're used to pay for resources like CPU, memory, and network bandwidth. At the current ICP price of $7.50, 1 ICP buys you 10 trillion cycles. On average, a simple dapp might use about 100 billion cycles per month, which is equivalent to $0.075 worth of ICP.`;
+const cyclesInfoText = [
+  { icon: <MemoryIcon fontSize="large" />, title: 'Computation Fuel', content: 'Cycles power computation on the Internet Computer.' },
+  { icon: <StorageIcon fontSize="large" />, title: 'Resource Payment', content: 'Used to pay for CPU, memory, and network bandwidth.' },
+  { icon: <MonetizationOnIcon fontSize="large" />, title: 'ICP Conversion', content: '1 ICP buys 10 trillion cycles at $7.50.' },
+  { icon: <SpeedIcon fontSize="large" />, title: 'Usage Example', content: 'A simple dapp uses ~100 billion cycles/month ($0.075 ICP).' },
+];
 
 const App: React.FC = () => {
   const [darkMode, setDarkMode] = useState(false);
@@ -100,14 +123,24 @@ const App: React.FC = () => {
             <Typography variant="h4" gutterBottom color="textPrimary">
               Purchase IC Cycles
             </Typography>
-            <div className={`info-section ${darkMode ? 'dark' : ''}`}>
-              <Typography variant="subtitle1" className="info-title" color="textPrimary">
-                What are Cycles?
-              </Typography>
-              <Typography variant="body2" className="info-content" color="textSecondary">
-                {cyclesInfoText}
-              </Typography>
-            </div>
+            <Typography variant="h6" gutterBottom color="textPrimary">
+              What are Cycles?
+            </Typography>
+            <Grid container spacing={3} style={{ marginBottom: '24px' }}>
+              {cyclesInfoText.map((info, index) => (
+                <Grid item xs={12} sm={6} md={3} key={index}>
+                  <InfoCard elevation={3}>
+                    {info.icon}
+                    <Typography variant="subtitle1" style={{ marginTop: '8px', fontWeight: 'bold' }}>
+                      {info.title}
+                    </Typography>
+                    <Typography variant="body2" style={{ marginTop: '8px' }}>
+                      {info.content}
+                    </Typography>
+                  </InfoCard>
+                </Grid>
+              ))}
+            </Grid>
             <div className="flex justify-between items-center mb-4">
               <Typography color="textSecondary">{isICP ? 'ICP' : 'USD'}</Typography>
               <Switch
