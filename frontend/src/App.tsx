@@ -7,6 +7,8 @@ const StyledCard = styled(Card)(({ theme }) => ({
   maxWidth: 600,
   margin: '2rem auto',
   padding: theme.spacing(3),
+  backgroundColor: theme.palette.background.paper,
+  boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
 }));
 
 const App: React.FC = () => {
@@ -76,21 +78,23 @@ const App: React.FC = () => {
   return (
     <StyledCard>
       <CardContent>
-        <Typography variant="h4" gutterBottom>
+        <Typography variant="h4" gutterBottom color="textPrimary">
           Purchase IC Cycles
         </Typography>
         <div className="flex justify-between items-center mb-4">
-          <Typography>Dark Mode</Typography>
+          <Typography color="textSecondary">Dark Mode</Typography>
           <Switch
             checked={darkMode}
             onChange={(e) => setDarkMode(e.target.checked)}
+            color="primary"
           />
         </div>
         <div className="flex justify-between items-center mb-4">
-          <Typography>{isICP ? 'ICP' : 'USD'}</Typography>
+          <Typography color="textSecondary">{isICP ? 'ICP' : 'USD'}</Typography>
           <Switch
             checked={isICP}
             onChange={(e) => setIsICP(e.target.checked)}
+            color="primary"
           />
         </div>
         <Slider
@@ -101,12 +105,13 @@ const App: React.FC = () => {
           step={isICP ? 0.1 : 1}
           marks
           valueLabelDisplay="auto"
+          color="primary"
         />
-        <Typography variant="h6" className="mt-4">
+        <Typography variant="h6" className="mt-4" color="textPrimary">
           {isICP ? `${amount} ICP` : `$${amount}`}
         </Typography>
         {cycles !== null && (
-          <Typography variant="body1" className="mt-2">
+          <Typography variant="body1" className="mt-2" color="textSecondary">
             {`${Number(cycles).toLocaleString()} cycles`}
           </Typography>
         )}
@@ -115,18 +120,27 @@ const App: React.FC = () => {
           variant="outlined"
           fullWidth
           className="mt-4"
+          InputLabelProps={{
+            style: { color: '#666666' },
+          }}
         />
         <TextField
           label="Expiration Date"
           variant="outlined"
           fullWidth
           className="mt-4"
+          InputLabelProps={{
+            style: { color: '#666666' },
+          }}
         />
         <TextField
           label="CVV"
           variant="outlined"
           fullWidth
           className="mt-4"
+          InputLabelProps={{
+            style: { color: '#666666' },
+          }}
         />
         <Button
           variant="contained"
@@ -135,6 +149,7 @@ const App: React.FC = () => {
           className="mt-4"
           onClick={handlePurchase}
           disabled={loading}
+          style={{ marginTop: '1rem' }}
         >
           {loading ? <CircularProgress size={24} /> : 'Purchase Cycles'}
         </Button>
