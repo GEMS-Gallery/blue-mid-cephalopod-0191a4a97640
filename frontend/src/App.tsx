@@ -1,10 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { backend } from 'declarations/backend';
-import { Card, CardContent, Typography, Slider, Switch, TextField, Button, CircularProgress, Snackbar, IconButton, Grid, Box } from '@mui/material';
+import { Card, CardContent, Typography, Slider, Switch, TextField, Button, CircularProgress, Snackbar, Grid, Box } from '@mui/material';
 import { styled, ThemeProvider } from '@mui/material/styles';
-import Brightness4Icon from '@mui/icons-material/Brightness4';
-import Brightness7Icon from '@mui/icons-material/Brightness7';
-import EvStationIcon from '@mui/icons-material/EvStation';
 import SpeedIcon from '@mui/icons-material/Speed';
 import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
 import BarChartIcon from '@mui/icons-material/BarChart';
@@ -82,7 +79,6 @@ const cyclesInfoText = [
   { icon: <SpeedIcon fontSize="large" />, title: 'Performance', content: 'Powers IC Computation' },
   { icon: <AccountBalanceWalletIcon fontSize="large" />, title: 'Economy', content: '1 ICP = 10T Cycles' },
   { icon: <BarChartIcon fontSize="large" />, title: 'Usage', content: `Avg: ${abbreviateNumber(AVERAGE_USAGE_CYCLES)} Cycles/Month` },
-  { icon: <EvStationIcon fontSize="large" />, title: 'Refill', content: 'Top up your cycles here' },
 ];
 
 const App: React.FC = () => {
@@ -160,15 +156,9 @@ const App: React.FC = () => {
         <Header darkMode={darkMode} toggleDarkMode={toggleDarkMode} />
         <StyledCard>
           <CardContent>
-            <Box display="flex" alignItems="center" mb={4}>
-              <EvStationIcon fontSize="large" color="primary" style={{ marginRight: '16px' }} />
-              <Typography variant="h3" color="textPrimary" style={{ fontWeight: 'bold' }}>
-                Cycle Refill Station
-              </Typography>
-            </Box>
             <Grid container spacing={3} style={{ marginBottom: '32px' }}>
               {cyclesInfoText.map((info, index) => (
-                <Grid item xs={6} sm={3} key={index}>
+                <Grid item xs={12} sm={4} key={index}>
                   <InfoBox>
                     <Box className="info-icon" color="primary.main">
                       {info.icon}
