@@ -17,16 +17,24 @@ body {
   z-index: 1000;
 }
 
-.info-button {
-  margin-left: 8px;
-  padding: 4px 8px;
-  border-radius: 4px;
-  font-size: 0.8rem;
-  font-weight: bold;
-  cursor: pointer;
-  transition: background-color 0.3s, color 0.3s;
+.info-section {
+  background-color: rgba(0, 0, 0, 0.05);
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 24px;
+  transition: background-color 0.3s;
 }
 
-.info-button:hover {
-  background-color: rgba(0, 0, 0, 0.1);
+.dark .info-section {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.info-title {
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+
+.info-content {
+  font-size: 0.9rem;
+  line-height: 1.5;
 }

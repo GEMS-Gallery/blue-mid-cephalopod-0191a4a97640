@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { backend } from 'declarations/backend';
-import { Card, CardContent, Typography, Slider, Switch, TextField, Button, CircularProgress, Snackbar, IconButton, Tooltip } from '@mui/material';
+import { Card, CardContent, Typography, Slider, Switch, TextField, Button, CircularProgress, Snackbar, IconButton } from '@mui/material';
 import { styled, ThemeProvider } from '@mui/material/styles';
 import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
-import InfoIcon from '@mui/icons-material/Info';
 import { lightTheme, darkTheme } from './main';
 
 const StyledCard = styled(Card)(({ theme }) => ({
@@ -101,22 +100,16 @@ const App: React.FC = () => {
             <Typography variant="h4" gutterBottom color="textPrimary">
               Purchase IC Cycles
             </Typography>
+            <div className={`info-section ${darkMode ? 'dark' : ''}`}>
+              <Typography variant="subtitle1" className="info-title" color="textPrimary">
+                What are Cycles?
+              </Typography>
+              <Typography variant="body2" className="info-content" color="textSecondary">
+                {cyclesInfoText}
+              </Typography>
+            </div>
             <div className="flex justify-between items-center mb-4">
-              <div className="flex items-center">
-                <Typography color="textSecondary">{isICP ? 'ICP' : 'USD'}</Typography>
-                <Tooltip title={cyclesInfoText} arrow placement="right">
-                  <Button
-                    className="info-button"
-                    style={{ 
-                      backgroundColor: darkMode ? '#333' : '#e0e0e0',
-                      color: darkMode ? '#fff' : '#000'
-                    }}
-                  >
-                    <InfoIcon fontSize="small" />
-                    Info
-                  </Button>
-                </Tooltip>
-              </div>
+              <Typography color="textSecondary">{isICP ? 'ICP' : 'USD'}</Typography>
               <Switch
                 checked={isICP}
                 onChange={(e) => setIsICP(e.target.checked)}
