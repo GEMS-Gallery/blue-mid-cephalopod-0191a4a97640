@@ -1,6 +1,33 @@
 import { createTheme } from '@mui/material/styles';
 
+const baseTheme = {
+  typography: {
+    fontFamily: 'Roboto, Arial, sans-serif',
+    h3: {
+      fontWeight: 700,
+    },
+    h4: {
+      fontWeight: 600,
+    },
+    h5: {
+      fontWeight: 600,
+    },
+  },
+  components: {
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          textTransform: 'none',
+          fontWeight: 600,
+          borderRadius: '8px',
+        },
+      },
+    },
+  },
+};
+
 export const lightTheme = createTheme({
+  ...baseTheme,
   palette: {
     mode: 'light',
     primary: {
@@ -18,36 +45,10 @@ export const lightTheme = createTheme({
       secondary: '#666666',
     },
   },
-  typography: {
-    fontFamily: 'Roboto, Arial, sans-serif',
-    h3: {
-      fontWeight: 700,
-    },
-    h4: {
-      fontWeight: 600,
-    },
-  },
-  components: {
-    MuiCard: {
-      styleOverrides: {
-        root: {
-          boxShadow: 'none',
-          border: '1px solid #e0e0e0',
-        },
-      },
-    },
-    MuiButton: {
-      styleOverrides: {
-        root: {
-          textTransform: 'none',
-          fontWeight: 600,
-        },
-      },
-    },
-  },
 });
 
 export const darkTheme = createTheme({
+  ...baseTheme,
   palette: {
     mode: 'dark',
     primary: {
@@ -63,33 +64,6 @@ export const darkTheme = createTheme({
     text: {
       primary: '#ffffff',
       secondary: '#b3b3b3',
-    },
-  },
-  typography: {
-    fontFamily: 'Roboto, Arial, sans-serif',
-    h3: {
-      fontWeight: 700,
-    },
-    h4: {
-      fontWeight: 600,
-    },
-  },
-  components: {
-    MuiCard: {
-      styleOverrides: {
-        root: {
-          boxShadow: 'none',
-          border: '1px solid #333333',
-        },
-      },
-    },
-    MuiButton: {
-      styleOverrides: {
-        root: {
-          textTransform: 'none',
-          fontWeight: 600,
-        },
-      },
     },
   },
 });

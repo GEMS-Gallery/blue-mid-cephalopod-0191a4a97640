@@ -4,10 +4,10 @@ import { Card, CardContent, Typography, Slider, Switch, TextField, Button, Circu
 import { styled, ThemeProvider } from '@mui/material/styles';
 import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
-import MemoryIcon from '@mui/icons-material/Memory';
-import StorageIcon from '@mui/icons-material/Storage';
-import NetworkCheckIcon from '@mui/icons-material/NetworkCheck';
-import MonetizationOnIcon from '@mui/icons-material/MonetizationOn';
+import EvStationIcon from '@mui/icons-material/EvStation';
+import SpeedIcon from '@mui/icons-material/Speed';
+import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
+import BarChartIcon from '@mui/icons-material/BarChart';
 import { lightTheme, darkTheme } from './theme';
 
 const StyledCard = styled(Card)(({ theme }) => ({
@@ -15,8 +15,8 @@ const StyledCard = styled(Card)(({ theme }) => ({
   margin: '2rem auto',
   padding: theme.spacing(3),
   backgroundColor: theme.palette.background.paper,
-  boxShadow: 'none',
-  borderRadius: '12px',
+  boxShadow: '0 8px 32px rgba(0, 0, 0, 0.1)',
+  borderRadius: '16px',
 }));
 
 const InfoBox = styled(Box)(({ theme }) => ({
@@ -27,10 +27,12 @@ const InfoBox = styled(Box)(({ theme }) => ({
   alignItems: 'center',
   justifyContent: 'center',
   textAlign: 'center',
-  borderRadius: '8px',
-  transition: 'background-color 0.3s',
+  borderRadius: '12px',
+  transition: 'all 0.3s ease',
+  backgroundColor: theme.palette.background.default,
   '&:hover': {
-    backgroundColor: theme.palette.action.hover,
+    transform: 'translateY(-5px)',
+    boxShadow: '0 5px 15px rgba(0, 0, 0, 0.1)',
   },
 }));
 
@@ -47,12 +49,13 @@ const StyledTextField = styled(TextField)(({ theme }) => ({
     },
   },
   '& .MuiOutlinedInput-input': {
-    padding: '10px 15px',
+    padding: '12px 15px',
     backgroundColor: theme.palette.mode === 'light' ? '#f0f0f0' : '#333',
-    borderRadius: '4px',
-    transition: 'background-color 0.3s',
+    borderRadius: '8px',
+    transition: 'background-color 0.3s, box-shadow 0.3s',
     '&:focus': {
       backgroundColor: theme.palette.mode === 'light' ? '#e0e0e0' : '#444',
+      boxShadow: `0 0 0 2px ${theme.palette.primary.main}`,
     },
   },
 }));
@@ -66,10 +69,10 @@ const abbreviateNumber = (num: number): string => {
 };
 
 const cyclesInfoText = [
-  { icon: <MemoryIcon fontSize="large" />, title: 'Computation', content: 'Powers IC' },
-  { icon: <StorageIcon fontSize="large" />, title: 'Resources', content: 'CPU, Memory, Network' },
-  { icon: <MonetizationOnIcon fontSize="large" />, title: 'Conversion', content: '1 ICP = 10T Cycles' },
-  { icon: <NetworkCheckIcon fontSize="large" />, title: 'Usage', content: 'Avg: {avgUsage} Cycles/Month' },
+  { icon: <SpeedIcon fontSize="large" />, title: 'Performance', content: 'Powers IC Computation' },
+  { icon: <AccountBalanceWalletIcon fontSize="large" />, title: 'Economy', content: '1 ICP = 10T Cycles' },
+  { icon: <BarChartIcon fontSize="large" />, title: 'Usage', content: 'Avg: {avgUsage} Cycles/Month' },
+  { icon: <EvStationIcon fontSize="large" />, title: 'Refill', content: 'Top up your cycles here' },
 ];
 
 const App: React.FC = () => {
@@ -148,10 +151,13 @@ const App: React.FC = () => {
       <div style={{ minHeight: '100vh', backgroundColor: darkMode ? '#121212' : '#f5f5f5', transition: 'background-color 0.3s' }}>
         <StyledCard>
           <CardContent>
-            <Typography variant="h3" gutterBottom color="textPrimary" style={{ fontWeight: 'bold', marginBottom: '1.5rem' }}>
-              What are Cycles?
-            </Typography>
-            <Grid container spacing={3} style={{ marginBottom: '24px' }}>
+            <Box display="flex" alignItems="center" mb={4}>
+              <EvStationIcon fontSize="large" color="primary" style={{ marginRight: '16px' }} />
+              <Typography variant="h3" color="textPrimary" style={{ fontWeight: 'bold' }}>
+                Cycle Refill Station
+              </Typography>
+            </Box>
+            <Grid container spacing={3} style={{ marginBottom: '32px' }}>
               {cyclesInfoText.map((info, index) => (
                 <Grid item xs={6} sm={3} key={index}>
                   <InfoBox>
@@ -168,8 +174,8 @@ const App: React.FC = () => {
                 </Grid>
               ))}
             </Grid>
-            <Typography variant="h4" gutterBottom color="textPrimary" style={{ marginTop: '2rem' }}>
-              Purchase IC Cycles
+            <Typography variant="h5" gutterBottom color="textPrimary" style={{ marginTop: '2rem', marginBottom: '1rem' }}>
+              Refill Your Cycles
             </Typography>
             <div className="flex justify-between items-center mb-4">
               <Typography color="textSecondary">{isICP ? 'ICP' : 'USD'}</Typography>
@@ -230,9 +236,9 @@ const App: React.FC = () => {
               fullWidth
               onClick={handlePurchase}
               disabled={loading}
-              style={{ marginTop: '1.5rem', padding: '12px' }}
+              style={{ marginTop: '1.5rem', padding: '12px', borderRadius: '8px' }}
             >
-              {loading ? <CircularProgress size={24} /> : 'Purchase Cycles'}
+              {loading ? <CircularProgress size={24} /> : 'Refill Cycles'}
             </Button>
           </CardContent>
         </StyledCard>
