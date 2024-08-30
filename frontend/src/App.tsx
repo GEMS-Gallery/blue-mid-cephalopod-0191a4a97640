@@ -11,6 +11,14 @@ const StyledCard = styled(Card)(({ theme }) => ({
   boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
 }));
 
+const abbreviateNumber = (num: number): string => {
+  const suffixes = ['', 'K', 'M', 'B', 'T'];
+  const magnitude = Math.floor(Math.log10(Math.abs(num)) / 3);
+  const scaled = num / Math.pow(10, magnitude * 3);
+  const suffix = suffixes[Math.min(magnitude, suffixes.length - 1)];
+  return scaled.toFixed(2) + suffix;
+};
+
 const App: React.FC = () => {
   const [darkMode, setDarkMode] = useState(false);
   const [isICP, setIsICP] = useState(false);
@@ -60,7 +68,7 @@ const App: React.FC = () => {
     try {
       const result = await backend.purchase_cycles(amount, isICP);
       if ('ok' in result) {
-        alert(`Successfully purchased ${result.ok} cycles!`);
+        alert(`Successfully purchased ${abbreviateNumber(Number(result.ok))} cycles!`);
       } else {
         setError(`Error: ${result.err}`);
       }
@@ -112,7 +120,7 @@ const App: React.FC = () => {
         </Typography>
         {cycles !== null && (
           <Typography variant="body1" className="mt-2" color="textSecondary">
-            {`${Number(cycles).toLocaleString()} cycles`}
+            {`${abbreviateNumber(Number(cycles))} cycles`}
           </Typography>
         )}
         <TextField
