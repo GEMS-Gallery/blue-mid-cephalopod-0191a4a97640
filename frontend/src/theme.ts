@@ -21,6 +21,16 @@ export const lightTheme = createTheme({
   typography: {
     fontFamily: 'Roboto, Arial, sans-serif',
   },
+  components: {
+    MuiCard: {
+      styleOverrides: {
+        root: {
+          boxShadow: 'none',
+          border: '1px solid #e0e0e0',
+        },
+      },
+    },
+  },
 });
 
 export const darkTheme = createTheme({
@@ -43,5 +53,15 @@ export const darkTheme = createTheme({
   },
   typography: {
     fontFamily: 'Roboto, Arial, sans-serif',
+  },
+  components: {
+    MuiCard: {
+      styleOverrides: {
+        root: {
+          boxShadow: 'none',
+          border: '1px solid #333333',
+        },
+      },
+    },
   },
 });

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { backend } from 'declarations/backend';
-import { Card, CardContent, Typography, Slider, Switch, TextField, Button, CircularProgress, Snackbar, IconButton, Grid, Paper } from '@mui/material';
+import { Card, CardContent, Typography, Slider, Switch, TextField, Button, CircularProgress, Snackbar, IconButton, Grid, Box } from '@mui/material';
 import { styled, ThemeProvider } from '@mui/material/styles';
 import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
@@ -8,28 +8,30 @@ import MemoryIcon from '@mui/icons-material/Memory';
 import StorageIcon from '@mui/icons-material/Storage';
 import NetworkCheckIcon from '@mui/icons-material/NetworkCheck';
 import MonetizationOnIcon from '@mui/icons-material/MonetizationOn';
-import SpeedIcon from '@mui/icons-material/Speed';
 import { lightTheme, darkTheme } from './theme';
-import { Line } from 'react-chartjs-2';
-import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend } from 'chart.js';
-
-ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 
 const StyledCard = styled(Card)(({ theme }) => ({
   maxWidth: 800,
   margin: '2rem auto',
   padding: theme.spacing(3),
   backgroundColor: theme.palette.background.paper,
-  boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+  boxShadow: 'none',
+  borderRadius: '12px',
 }));
 
-const InfoCard = styled(Paper)(({ theme }) => ({
+const InfoBox = styled(Box)(({ theme }) => ({
   padding: theme.spacing(2),
   height: '100%',
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'center',
+  justifyContent: 'center',
   textAlign: 'center',
+  borderRadius: '8px',
+  transition: 'background-color 0.3s',
+  '&:hover': {
+    backgroundColor: theme.palette.action.hover,
+  },
 }));
 
 const abbreviateNumber = (num: number): string => {
@@ -41,10 +43,10 @@ const abbreviateNumber = (num: number): string => {
 };
 
 const cyclesInfoText = [
-  { icon: <MemoryIcon fontSize="large" />, title: 'Computation Fuel', content: 'Cycles power computation on the Internet Computer.' },
-  { icon: <StorageIcon fontSize="large" />, title: 'Resource Payment', content: 'Used to pay for CPU, memory, and network bandwidth.' },
-  { icon: <MonetizationOnIcon fontSize="large" />, title: 'ICP Conversion', content: '1 ICP buys 10 trillion cycles at $7.50.' },
-  { icon: <SpeedIcon fontSize="large" />, title: 'Usage Example', content: 'A simple dapp uses ~100 billion cycles/month ($0.075 ICP).' },
+  { icon: <MemoryIcon fontSize="large" />, title: 'Computation', content: 'Powers IC' },
+  { icon: <StorageIcon fontSize="large" />, title: 'Resources', content: 'CPU, Memory, Network' },
+  { icon: <MonetizationOnIcon fontSize="large" />, title: 'Conversion', content: '1 ICP = 10T Cycles' },
+  { icon: <NetworkCheckIcon fontSize="large" />, title: 'Usage', content: '100B Cycles/Month' },
 ];
 
 const App: React.FC = () => {
@@ -128,16 +130,18 @@ const App: React.FC = () => {
             </Typography>
             <Grid container spacing={3} style={{ marginBottom: '24px' }}>
               {cyclesInfoText.map((info, index) => (
-                <Grid item xs={12} sm={6} md={3} key={index}>
-                  <InfoCard elevation={3}>
-                    {info.icon}
-                    <Typography variant="subtitle1" style={{ marginTop: '8px', fontWeight: 'bold' }}>
+                <Grid item xs={6} sm={3} key={index}>
+                  <InfoBox>
+                    <Box className="info-icon" color="primary.main">
+                      {info.icon}
+                    </Box>
+                    <Typography variant="subtitle1" style={{ fontWeight: 'bold', marginBottom: '4px' }}>
                       {info.title}
                     </Typography>
-                    <Typography variant="body2" style={{ marginTop: '8px' }}>
+                    <Typography variant="body2">
                       {info.content}
                     </Typography>
-                  </InfoCard>
+                  </InfoBox>
                 </Grid>
               ))}
             </Grid>
